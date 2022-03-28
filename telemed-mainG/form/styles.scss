@@ -1,0 +1,356 @@
+:root {
+  font-size: 62.5%; // 62.5% = 10px
+}
+
+@keyframes showform {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+*,
+body,
+#app {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100vw;
+  min-height: 100%;
+
+  font-size: 1.6rem;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+
+  width: 100vw;
+
+  padding: 7.25rem;
+
+  gap: 9.2rem;
+
+  @media (max-width: 1020px) {
+    flex-direction: column;
+  }
+
+  @media (max-width: 800px) {
+    padding: 3rem;
+  }
+}
+
+.nav-multi-step-form,
+nav > div {
+  display: flex;
+  flex-direction: column;
+
+  width: 46.5rem;
+  max-width: 46.5rem;
+
+  gap: 2rem;
+
+  animation-name: showform;
+  animation-duration: 1s;
+
+  @media (max-width: 800px) {
+    min-width: 30rem;
+    width: 100%;
+  }
+
+  @media (max-width: 500px) {
+    min-width: 25rem;
+  }
+
+  > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 1.6rem;
+    border: none;
+
+    width: 100%;
+
+    background: #0048d9;
+    border-radius: 0.6rem;
+
+    font-family: "IBM Plex Sans", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.8rem;
+    line-height: 2.3rem;
+
+    color: #ffffff;
+
+    align-self: stretch;
+
+    cursor: pointer;
+  }
+
+  span {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 2rem;
+    line-height: 2.3rem;
+
+    color: #9ba9b8;
+  }
+
+  h2 {
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    font-size: 4rem;
+    line-height: 6rem;
+    /* identical to box height */
+
+    color: #000000;
+  }
+
+  p {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 2.1rem;
+    line-height: 2.5rem;
+
+    color: #71893d;
+  }
+}
+
+.input-styled {
+  display: flex;
+  flex-direction: column;
+  transition: all ease-in-out 0.2s;
+
+  label {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.6rem;
+    line-height: 150%;
+
+    letter-spacing: 0.01em;
+
+    /* Text / Secondary - Grey2 */
+
+    color: #6f7482;
+
+    /* Inside Auto Layout */
+
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    margin: 0.2rem 0;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  select {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.2rem;
+
+    border: transparent;
+
+    width: 100%;
+    height: 4.8rem;
+
+    /* Surface/Light */
+    background: #f8fafc;
+    border-radius: 4px;
+
+    /* Inside Auto Layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin: 0.2rem 0;
+  }
+}
+
+.error {
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="radio"],
+  select {
+    border: 0.1rem solid #ed0131;
+  }
+  label {
+    color: #ed0131;
+  }
+}
+.input-styled-radio {
+  display: flex;
+  align-items: center;
+
+  label {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.4rem;
+    /* identical to box height, or 20px */
+
+    display: flex;
+    align-items: center;
+
+    /* Text / Primary - Basic */
+
+    color: #3b4256;
+  }
+
+  label + input {
+    margin-left: 8rem;
+  }
+
+  input + label {
+    margin-left: 0.8rem;
+  }
+}
+
+.buttons-before-next {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  width: 100%;
+
+  flex: none;
+  flex-grow: 0;
+  margin: 2rem 0;
+
+  .primary {
+    display: flex;
+    align-items: center;
+    padding: 1.2rem 1.6rem;
+    border: none;
+
+    min-width: 10rem;
+
+    background: #0048d9;
+    border-radius: 0.6rem;
+
+    font-family: "IBM Plex Sans", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.8rem;
+    line-height: 2.3rem;
+
+    color: #ffffff;
+
+    align-self: stretch;
+
+    cursor: pointer;
+  }
+
+  .outlined {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 10rem;
+    height: 4.8rem;
+
+    /* Text / Link */
+
+    border: 0.1rem solid #0048d9;
+    box-sizing: border-box;
+    border-radius: 0.6rem;
+
+    padding: 1.2rem 1.6rem;
+
+    /* System/White */
+
+    background: #ffffff;
+    align-self: stretch;
+    cursor: pointer;
+
+    font-family: "IBM Plex Sans", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.8rem;
+    line-height: 2.3rem;
+    /* Text / Link */
+
+    color: #0048d9;
+  }
+}
+
+.card-fields {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+/* Subscription user */
+.subscription-user {
+  display: flex;
+  flex-direction: column;
+
+  height: auto;
+
+  gap: 2rem;
+
+  min-width: 40rem;
+
+  @media (max-width: 800px) {
+    min-width: 30rem;
+    width: 100%;
+  }
+
+  @media (max-width: 500px) {
+    min-width: 25rem;
+  }
+
+  img {
+    width: 12.7rem;
+    height: 5rem;
+  }
+
+  > p {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 2.5rem;
+    line-height: 2.9rem;
+
+    color: #71893d;
+  }
+
+  .subscription {
+    width: 100%;
+    min-height: 8.6rem;
+    padding: 1rem;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    font-family: "IBM Plex Sans", sans-serif;
+
+    background: #ffffff;
+    border: 0.1rem solid #e5e5e5;
+    box-sizing: border-box;
+
+    animation-name: showform;
+    animation-duration: 1s;
+  }
+}
