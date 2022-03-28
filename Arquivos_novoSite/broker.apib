@@ -1,0 +1,627 @@
+FORMAT: 1A
+HOST: https://api.onli.com.br/v1
+
+# Broker
+
+This documentation describes the requests available on our platform responsible for the broker's operations.
+
+#### Authorization
+Follow the RFC-6749 (OAuth2) standard for authorizing requests. https://tools.ietf.org/html/rfc6749. -- Please,
+check the reference if you have questions about how the protocol works.
+
+Contact the support team to get the necessary credentials for your application.
+
+# Group Leads
+
+## Create a Lead [/leads/]
+
+### Create [POST]
+
++ Attributes (Lead)
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Attributes (LeadComplete)
+    
+# Group Quotes
+
+## List quotes [/quotes/{?rows,page,filters,sorts}]
+
++ Parameters
+    + rows (number, optional)
+        A limit of objects to be returned, between 1 and 100 items.
+        
+        + Default: `100`
+        
+    + page (number, optional)
+        The page for the list of objects to return.
+
+        + Default: `1`
+
+    + filters (Filter [ˆ0-9], optional)
+        The array of items to filter.
+
+        + key: Name of the key or field to filter (string)
+            
+        + value: The value to be used in the filter (string)
+            - date
+            - status
+
+        + op: Operation to filter (string)
+            - eq
+            - gt
+            - like
+            - lt
+            - lte
+            - ne
+            - regex
+    + sorts (Sort [ˆ0-9], optional)
+        The array of items to sort.
+
+        + key: Name of the key or field (string)
+            - date
+            - status
+        + order: The order to sort this key (string)
+            - asc
+            - desc
+
+### List [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Attributes (QuoteIterator)
+    
+## Start a Quote [/quotes/request/]
+
+Before making a quote, it is necessary to provide the API with resource identifiers previously created in the
+platform. Like for example, `Lead`, `BrokerChannel` and `BrokerProduct`.
+
+This information that asks for an identifier, will be used to track and version your quote later. This will ensure
+that a `BrokerProduct` will remain the same until effective, as it may undergo changes in the meantime.
+
+### Start [POST]
+
++ Attributes (QuoteRequest)
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Attributes (QuoteRequestComplete)
+    
+    
+## Finish a Quote [/quotes/]
+
+Use the requests below to finish quotes, getting the answer from calculation engines,
+integrations with insurance and communication with other platform partners.
+
+### Finish [POST]
+
++ Attributes (Quote)
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Attributes (QuoteComplete)
+    
+
+# Group Sales
+
+## List sales [/sales/{?rows,page,filters,sorts}]
+
++ Parameters
+    + rows (number, optional)
+        A limit of objects to be returned, between 1 and 100 items.
+        
+        + Default: `100`
+        
+    + page (number, optional)
+        The page for the list of objects to return.
+
+        + Default: `1`
+
+    + filters (Filter [ˆ0-9], optional)
+        The array of items to filter.
+
+        + key: Name of the key or field to filter (string)
+            
+        + value: The value to be used in the filter (string)
+            - date
+            - status
+
+        + op: Operation to filter (string)
+            - eq
+            - gt
+            - like
+            - lt
+            - lte
+            - ne
+            - regex
+    + sorts (Sort [ˆ0-9], optional)
+        The array of items to sort.
+
+        + key: Name of the key or field (string)
+            - date
+            - status
+        + order: The order to sort this key (string)
+            - asc
+            - desc
+
+### List [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Attributes (SaleIterator)
+    
+## Start a Sale [/sales/request/]
+
+Before making a sale, it is necessary to provide the API with resource identifiers previously created in the
+platform. Like for example, `Quote` and `Installment`.
+
+This information that asks for an identifier, will be used to track and version your sale later. This will ensure
+that a `Quote` will remain the same until effective, as it may undergo changes in the meantime.
+
+### Start [POST]
+
++ Attributes (SaleRequest)
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Attributes (SaleRequestComplete)
+    
+    
+## Finish a Sale [/sales/]
+
+Use the requests below to finish sales, getting the answer from
+integrations with insurance and communication with other platform partners.
+
+### Finish [POST]
+
++ Attributes (Sale)
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Attributes (SaleComplete)
+    
+
+# Group Charges / Payments
+
+## Executes a Payment [/broker-charges/]
+
+Use the requests below to charge invoices, associated with the sales above.
+
+### Charge [POST]
+
++ Attributes (Charge)
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Attributes (InvoicePaymentTry)
+
+# Data Structures
+
+## Lead (object)
++ name: João Silva (string, required) - Lead name.
++ email: joao@example.com (string, optional) - Lead email.
++ phone: `+55 (41) 88888-47777` (string, optional) - Lead phone.
++ broker_product_id: 5eb44f796492e600121971ae (string, optional) - Identifier of `BrokerProduct`.
+
+## LeadComplete (object)
++ Include Lead
++ id: 5e99f4c67a6ca928a15794ed (string) - Identifier of the newly created `Lead`.
+
+
+## QuoteRequest (object)
++ broker_product_id: 5eb44f796492e600121971ae (string, required) - Identifier of `BrokerProduct`.
++ broker_channel_id: 5ea34ecccd3f74b1b95c8b4b (string) - Identifier of the `BrokerChannel`.
++ lead_id: 5e99f4c67a6ca928a15794ed (string) - Identifier of the `Lead`.
+
+
+## QuoteRequestComplete (object)
++ Include QuoteRequest
++ id: 5eb450726492e600121971af (string) - Identifier of the newly created `QuoteRequest`.
++ broker_id: 5e99f4c67a6ca928a15794ed (string) - Identifier of the `Broker`.
++ product_id: 5e99f33fb796b70013e0ecb4 (string) - Identifier of the `Product` of the` Insurer`.
++ currency: BRL (string) - Currency that will be used in the quote, configured in `BrokerProduct`.
++ questions (array)
+    + (QuoteQuestion)
+        List of questions to be filled in the questionnaire.
++ coverages (array, optional)
+    + (QuoteCoverage)
+        List of coverages available for `BrokerProduct`.
++ bundles (array, optional)
+    + (ProductBundle)
+        List of `ProductBundle` available for this` BrokerProduct` with pre-filled packages and covers.
+
+
+## QuoteQuestion (object)
++ id: 5eb450726492e600121971af (string) - Question identifier.
++ name: Marital status of the main driver (string) - Name of the question, generally used in form labels.
++ required: true (boolean) - Flag that determines the obligation to send the response.
++ multiple: true (boolean) - Flag that determines whether this question has multiple answers.
++ questions (array)
+    + (QuoteQuestion)
+        List of recursive questions, dependent on this question.
++ options (array)
+    + (QuoteQuestionOption)
+        List of options available to be used in the response.
+
+
+## QuoteQuestionOption (object)
++ id: 5eb450726492e600121971af (string) - Option identifier.
++ name: Married (string) - Option name.
+
+
+## QuoteCoverage (object)
++ id: 42126492e600121911 (string) - Coverage identifier.
++ name: Assistance (string) - Coverage name.
++ description: More practicality and security for you. (string) - Description of coverage.
++ required: true (boolean) - Flag that determines the obligation to send coverage.
++ options (array)
+    + (QuoteCoverageOption)
+        List of options available to be used in choosing values ​​in the coverage.
+
+
+## QuoteCoverageOption (object)
++ id: abc1 (string) - Option identifier.
++ name: 300km (string) - Name of the option.
+
+## ProductBundle (object)
++ product_bundle_id: 5e99f34f7c84eaaef9ef65a4 (string) - Package identifier.
++ description: Special package. (string) - Description of the package.
++ coverages (array, optional)
+    + (QuoteCoverage)
+        List of coverages available for `BrokerProduct` within the package.
+
+## QuoteIterator (object)
++ items (array)
+
+    + (QuoteComplete)
+    
+        List of items.
+
++ total (number)
+
+    Total of items filtered.
+    
+## Quote (object)
++ quote_request_id: 5eb450726492e600121971af (string, required) - Identifier of the `QuoteRequest`.
++ bundles: 5e99f34f7c84eaaef9ef65a4, 6e99f34f7c84eaaef9ef65a5 (array) - List of `product_bundle_id`, with the desired` ProductBundle` identifiers.
++ policy_holder (Person, required) - Preponent data.
++ lifetime_start: `2020-05-08` (string, optional) - Effective date.
++ lifetime_end: `2020-05-08` (string, optional) - Effective end date.
++ renewal (QuoteRenewal, optional) - Renewal data.
++ items (array) - List of quote items related to assets.
+    + (enum)
+        + (QuoteLife)
+            Life
+        + (QuoteResidence)
+            Property / residence
+        + (QuoteVehicle)
+            Vehicle
+        + (QuoteElectronic)
+            Electronic
+        + (QuoteLoan)
+            Lender
+        + (QuoteWarranty)
+            Warranty
+
+## QuoteComplete (object)
++ id: 42126492e600121911 (string) - Quotation identifier.
++ quote_request_id: 5eb450726492e600121971af (string) - Identifier of the `QuoteRequest`.
++ broker_id: 5e99f4c67a6ca928a15794ed (string) - Identifier of the `Broker`.
++ policy_holder (Person, required) - Preponent data.
++ commission_percent: 15 (number) - Percentage of commission used in the quote, from the `BrokerProduct` register.
++ date: `2020-05-08T11: 19: 29.981Z` (string) - Date of the quotation.
++ items (array) - List of quotation items related to assets, already with the result and values.
+    + (QuoteCompleteItemBasic)
++ status (enum) - Status of the quote.
+    + 1 (number) - Started
+    + 2 (number) - Pending
+    + 3 (number) - Failed
+    + 4 (number) - Finished
+    + 5 (number) - Risk not accepted (Rejected)
+
+## QuoteCompleteItemBasic (object)
++ installments (array)
+    + (QuoteCompleteInstallment)
+    List of available parcels, already with the values ​​made available.
++ coverages (array)
+    + (QuoteCompleteCoverageAnswer)
+        List of coverages for the item. * With a different structure, since here is the answer to the conclusion in this quote. *
+
+## QuoteCompleteInstallment (object)
++ id: 42126492e600121911 (string) - Identifier of the installment.
++ amount: 1000 (number) - Value of the installment.
++ installment_quantity: 1 (number) - Number of installments.
++ total_amount: 1000 (number) - Total amount to be paid.
++ first_payment_amount: 50 (number) - First installment to be paid.
++ payment_methods (array) - Payment methods available.
+    + Billet (string) - Boleto Bancário
+    + CreditCard (string) - Credit Card
+    + DebitCard (string) - Debit Card
+    + WireTransfer (string) - Bank Transfer
+
+## QuoteCompleteCoverageAnswer (object)
++ id: 42126492e600121911 (string) - Coverage identifier.
++ premium_amount: 1000 (number) - Value of the prize, in cents.
++ deductible_amount: 1000 (number) - Value of the deductible, in cents.
+
+## QuoteRenewal (object)
++ is_substitution: true (boolean) - Flag that determines whether the quote replaces a previous policy.
++ is_change: false (boolean) - Flag that determines whether the quote is just a change from the previous policy.
++ has_previous_policy: true (boolean) - Flag that determines whether there is a previous policy.
++ previous_policy (QuotePreviousPolicy, optional) - Structured data from the previous policy.
+
+## QuoteItemBasic (object)
++ coverages (array)
+    + (QuoteCoverageAnswer)
+        List of coverages for the item. * With a different structure, since this is the conclusion of the quote. *
++ questions (array)
+    + (QuoteQuestionAnswer)
+        List of questions for the item. * With a different structure, since this is the conclusion of the quote. *
+
+## QuoteCoverageAnswer (object)
++ id: 42126492e600121911 (string, required) - Coverage identifier.
++ insured_amount: 10000 (number, optional) - Amount insured for coverage, in cents.
++ coverage_option_id: abc1 (string, optional) - Identifier of the option selected for coverage.
+
+## QuoteQuestionAnswer (object)
++ id: 5eb450726492e600121971af (string) - Option identifier.
++ value: 5eb450726492e600121971af (string) - Option response identifier, continues in the list of available options.
+
+## QuoteLife (object)
++ Include QuoteItemBasic
++ beneficiaries (array)
+    + (QuoteLifeBeneficiary)
+        List beneficiaries of this life.
+
+## QuoteLifeBeneficiary (object)
++ Include Person
++ participation: 60 (number, optional) - Percentage of participation.
++ is_divided_by_law: false (boolean, optional) - Flag that determines that the percentage of division will be carried out in accordance with current legislation.
+
+## QuoteVehicle (object)
++ Include QuoteItemBasic
++ model_year: 2019 (number, optional) - Model year.
++ manufacture_year: 2018 (number, optional) - Year of manufacture.
++ is_0km: false (boolean, optional) - Flag that determines whether the vehicle is zero km.
++ dealer_exit_datetime: `1975-12-21` (string, optional) - Date of pickup of the vehicle from the dealership. * Required if zero km *
++ address (Address, optional)
++ fipe_code: 5548919 (string, optional) - FIPE code.
++ fuel_type (enum) - Vehicle Fuel type.
+     + diesel (string) - Diesel
+     + ethanol (string) - Ethanol
+     + electric (string) - Electric
+     + hybrid (string) - Hybrid
+     + gasoline (string) - Gasoline
+     + flex (string) - Flex 
++ plate: ABC224489 (string, optional) - Vehicle plate.
++ chassis (string, optional) - Vehicle chassis numbering.
++ drivers (array)
+    + (QuoteVehicleDriver)
+        Lists probable drivers for this vehicle.
+
+## QuoteVehicleDriver (object)
++ Include Person
++ days_per_week: 3 (number, optional) - Number of days you can drive in the week.
++ is_policy_holder: false (boolean, optional) - Flag that determines whether the driver is the preponent.
++ relational_type (enum) - Degree of kinship.
+    + self (string) - Own person / preponent.
+    + grandpa (string)
+    + grandma (string)
+    + mom (string)
+    + dad (string)
+    + uncle (string)
+    + aunt (string)
+    + son (string)
+    + daughter (string)
+    + husband (string)
+    + wife (string)
+    + grandson (string)
+    + granddaughter (string)
+    + sibling (string)
+    + nephew (string)
+    + niece (string)
+    + younger (string)
+    + other (string)
+
+## QuoteResidence (object)
++ Include QuoteItemBasic
+
+## QuoteElectronic (object)
++ Include QuoteItemBasic
+
+## QuoteLoan (object)
++ Include QuoteItemBasic
+
+## QuoteWarranty (object)
++ Include QuoteItemBasic
++ coverage_amount: 1000 (number) - The coverage amount.
++ claimant (Person, optional) - The claimant data.
++ Lawsuit (Lawsuit, optional) - The lawsuit process data.
++ modality_type (enum) - The modality of warranty insurance type.
+    + 1 (number) - Bidder
+    + 2 (number) - Constructor
+    + 3 (number) - Supplier
+    + 4 (number) - ServiceProvider
+    + 5 (number) - PaymentAdvance
+    + 6 (number) - EnergyPayment
+    + 7 (number) - JudicialCivil
+    + 8 (number) - JudicialLabor
+    + 9 (number) - ModalityJudicialAppeal
+    + 10 (number) - ModalityJudicialTributary
++ judicial_appeal (enum) - The judicial appeal of warranty insurance type.
+    + 1 (number) - Extraordinary
+    + 2 (number) - Ordinary
+    + 3 (number) - Interlocutory
+    + 4 (number) - RescissionAction
+    + 5 (number) - Embargoes
+    + 6 (number) - Review
+    + 7 (number) - InterlocutoryExtraordinary
+    + 8 (number) - InterlocutoryOrdinary
+    + 9 (number) - InterlocutoryRescissionAction
+    + 10 (number) - InterlocutoryEmbargoes
+    + 11 (number) - InterlocutoryReview
+
+## QuotePreviousPolicy (object)
++ insurer_susep_code: 2228848995 (string, required) - Number of the previous policy registered with SUSEP.
++ number (string)
++ ci_code (string)
++ bonus_class_code: 10 (string)
++ cpf: 00000000000 (string, optional) - * Optional, if it is the same cpf as the current quote holder. *
+
+## SaleRequest (object)
++ quote_id: 5e99f4c67a6ca928a15794ed (string) - Identifier of the `Quote`.
+
+## SaleRequestComplete (object)
++ id: 5eb450726492e600121971af (string, required) - Identifier of the `SaleRequest`.
++ product_id: 5e99f33fb796b70013e0ecb4 (string) - Identifier of the insurer `Product`.
++ quote_id: 5e99f4c67a6ca928a15794ed (string) - Identifier of the `Quote`.
++ quote (QuoteComplete, required) - The quote data for this sale request.
+
+## SaleIterator (object)
++ items (array)
+
+    + (SaleComplete)
+    
+        List of items.
+
++ total (number)
+
+    Total of items filtered.
+    
+## Sale (object)
++ sale_request_id: 5eb450726492e600121971af (string, required) - Identifier of the `SaleRequest`.
++ installment_id: g5vo6581l (string, required) - Identifier of the chosen `Installment` returned in `Quote Installments` array.
++ payment_method: CreditCard (string, required) - The payment method chosen to pay that installment. The list of available methods is returned in the `Installment`.
++ complement (SaleComplement, required) - Sale complement data, allows us to increment new data.
+
+## SaleComplement (object)
++ policy_holder (Person, required) - Preponent data.
++ item (QuoteItemBasic, required) - Item incremental data.
+
+## SaleComplete (object)
++ id: 42126492e600121911 (string) - Sale identifier.
++ sale_request_id: 5eb450726492e600121971af (string) - Identifier of the `SaleRequest`.
++ installment_id: g5vo6581l (string, required) - Identifier of the chosen `Installment` returned in `Quote Installments` array.
++ payment_method: CreditCard (string, required) - The payment method chosen to pay that installment. The list of available methods is returned in the `Installment`.
++ complement (SaleComplement, required) - Sale complement data, allows us to increment new data.
++ chosen_installment (QuoteCompleteInstallment, required) - The chosen installment data.
++ invoice (Invoice, required) - The invoice data, to be used in `Charge` methods.
++ status (enum) - Status of the sale.
+    + 1 (number) - Started
+    + 2 (number) - Pending
+    + 3 (number) - Failed
+    + 4 (number) - Finished
+    + 5 (number) - Canceled
+
+## Invoice (object)
++ amount: 1000 (number) - Value of the invoice.
++ currency: BRL (string) - Currency that will be used in the invoice.
++ payment_method: CreditCard (string) - The payment method being used.
++ installments: 1 (number) - Number of installments.
++ recurrence (InvoiceRecurrence, optional)
++ payment_tries (array)
+    + (InvoicePaymentTry)
+        List of payment tries for this invoice.
++ status (enum) - Status of the invoice.
+    + 1 (number) - Pending
+    + 2 (number) - Pending Capture
+    + 3 (number) - Paid
+    + 4 (number) - Canceled
+
+## InvoiceRecurrence (object)            
++ quantity: 1 (string) - The quantity of recurrence that will be charged.
++ period_days: 30 (string) - The period/interval in days for each charge.
+
+## InvoicePaymentTry (object)            
++ payment_id: 42126492e600121911 (string) - Payment identifier.
++ error: Error description (string) - Error description, if any.
++ status: 1 (number) - Payment status.
+
+## Address (object)
++ city_name: Curitiba (string, optional)
++ district_name: Centro (string, optional) - Neighborhood name
++ state_code: PR (string, optional) - State code
++ street_name: Rua João Gualberto (string, optional)
++ number: 5558 (string, optional)
++ complement: Ap 887 (string, optional)
++ zip_code: 80015-000 (string, optional)
+
+## Person (object)
++ first_name: João (string, required) - Name
++ last_name: da Silva (string, required) - Last name
++ cpf: 00000000000 (string, optional) - * Optional, but can be validated by the insurer. *
++ rg: 000000000 (string, optional) - * Optional, but can be validated by the insurer. *
++ cnh: 000000000000 (string, optional) - * Optional, but can be validated by the insurer. *
++ cnpj: 000000000000 (string, optional) - * Optional, but can be validated by the insurer. *
++ cnae: 12344 (string, optional) - * Optional, but can be validated by the insurer. *
++ corporate_name: Razão social (string, optional)
++ fantasy_name: Nome fantasia (string, optional)
++ passport (string, optional) - Passport
++ is_foreign (boolean, optional) - Flag that determines whether you are a foreigner.
++ is_politically_exposed (boolean, optional) - Flag that determines whether you are a politically exposed person.
++ gender: male, female (enum, optional) - Gender
++ marital_status: single, married, divorced, widowed (enum, optional) - Marital status.
++ birth_date: `1975-12-21` (string, optional) - Date of birth
++ occupation_code (string, optional) - Occupation code, based on the CBO table.
++ salary: 100 (number, optional) - Salary, in cents.
++ address (Address, optional)
++ bank_account (PersonBankAccount, optional)
++ contact (PersonContact, optional)
+	
+## PersonContact (object)
++ email: dev@onli.com.br (string, optional)
++ mobile_phone: `+55 (41) 0000-0000` (string, optional)
++ phone: `+55 (41) 0000-0000` (string, optional)
+
+## PersonBankAccount (object)
++ bank_code: 225 (string, required)
++ agency: 2254441222 (string, required)
++ account 111233312-2 (string, required)
+
+## Charge (object)
++ sale_id: 5eb450726492e600121971af (string, required) - Identifier of the `Sale`.
++ card (Card, required) - The card data for this charge.
+
+## Lawsuit (object)
++ process_number: 1 (string, optional)
++ court_name: `Vara` (string, optional)
++ tribunal_name: `Tribunal name` (string, optional)
++ tribunal_city_name: `Curitiba` (string, optional)
++ tribunal_state_code: `PR` (string, optional)
+
+## Card (object)
++ brand: Visa (string, required)
+    
+    The card brand name.
+    
++ number: 5551489931484995473 (string, required)
+    
+    The card number itself.
+    
++ holder: Onli Seguros (string, required)
+    
+    The card holder name, as string.
+    
++ expiration_date: 12/2030 (string, required)
+    
+    The card expiration date, composed as string, but represented as a month and year regex. It should contain the following format: `dd/YYYY`. For example: 12/2030
+    
++ security_code: 123 (string, required)
+    
+    The card security code.
